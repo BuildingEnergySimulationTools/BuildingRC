@@ -2,20 +2,20 @@ within BuildingRC.Examples;
 
 model Example
   extends Modelica.Icons.Example;
-  parameter Modelica.Units.SI.Efficiency fs = 0.5;
-  parameter Real solar_wall_fraction = 0.2;
+  parameter Modelica.Units.SI.Efficiency fs = 0.4;
+  parameter Real solar_wall_fraction = 0.5;
   parameter Real pac_wall_fraction = 0.5;
   Modelica.Units.SI.Power Solar_gain;
   Modelica.Units.SI.Power heated_floor_ahu;
   constant Modelica.Units.SI.Density Rho_air = 1.204 "kg/m3";
   constant Modelica.Units.SI.Time hour = 3600 "s";
-  BuildingRC.Envelope.R6C2 r6c2(Building_cq = 500, C_fur = 1500, Inf = 0.5, S_hc = 75, S_walls = 900, S_windows = 100, T_init = 287.15, U_wall = 0.9, U_win = 2, V_int = 750) annotation(
+  BuildingRC.Envelope.R6C2 r6c2(Building_cq = 500, C_fur = 1500, Inf = 0.5, S_hc = 75, S_walls = 900, S_windows = 100, T_init (displayUnit = "K") = 287.75, U_wall = 0.9, U_win = 2, V_int = 750) annotation(
     Placement(visible = true, transformation(origin = {56, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable Boundaries(columns = 2:9, fileName = "C:/Users/bdurandestebe/Documents/56_NEOIA/modelica/boundaries_cta.txt", tableName = "table1", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   BuildingRC.HVAC.Heat_pump heat_pump annotation(
     Placement(visible = true, transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.HVAC.AHU_Cross_flow AHU_Cross_flow annotation(
+  BuildingRC.HVAC.AHU_Cross_flow AHU_Cross_flow(HX_eff = 0.7)  annotation(
     Placement(visible = true, transformation(origin = {0, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // Conversion
