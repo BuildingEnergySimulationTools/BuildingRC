@@ -9,18 +9,20 @@ model Example_Pelec_HP
   Modelica.Units.SI.Power heated_floor_ahu;
   constant Modelica.Units.SI.Density Rho_air = 1.204 "kg/m3";
   constant Modelica.Units.SI.Time hour = 3600 "s";
-  BuildingRC.Envelope.R6C2 r6c2(Building_cq = 500, C_fur = 1500, Inf = 0.5, S_hc = 75, S_walls = 900, S_windows = 100, T_init (displayUnit = "K") = 287.75, U_wall = 0.9, U_win = 2, V_int = 750) annotation(
+  BuildingRC.Envelope.R6C2 r6c2(Building_cq = 500, C_fur = 1500, Inf = 0.5, S_hc = 75, S_walls = 900, S_windows = 100, T_init(displayUnit = "K") = 287.75, U_wall = 0.9, U_win = 2, V_int = 750) annotation(
     Placement(visible = true, transformation(origin = {56, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable Boundaries(columns = 2:9, fileName = "C:/Users/bdurandestebe/Documents/56_NEOIA/modelica/boundaries_cta.txt", tableName = "table1", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   BuildingRC.HVAC.Heat_pump heat_pump annotation(
     Placement(visible = true, transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.HVAC.AHU_Cross_flow AHU_Cross_flow(HX_eff = 0.7)  annotation(
+  BuildingRC.HVAC.AHU_Cross_flow AHU_Cross_flow(HX_eff = 0.7) annotation(
     Placement(visible = true, transformation(origin = {0, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PID pid annotation(
-    Placement(visible = true, transformation(origin = {54, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Feedback feedback annotation(
-    Placement(visible = true, transformation(origin = {4, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  BuildingRC.Controls.Heating_Cooling_SP heating_Cooling_SP(Kp = 50000, Max_power = 10000000000, controllerType = Modelica.Blocks.Types.SimpleController.P) annotation(
+    Placement(visible = true, transformation(origin = {-40, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.BooleanExpression Heating(y = true) annotation(
+    Placement(visible = true, transformation(origin = {36, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.BooleanExpression Cooling(y = false) annotation(
+    Placement(visible = true, transformation(origin = {38, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // Conversion
   AHU_Cross_flow.Ctrl_m_blown_air = Boundaries.y[6] * Rho_air / hour;
@@ -42,6 +44,16 @@ equation
     Line(points = {{-68, 0}, {-60, 0}, {-60, 58}, {4, 58}, {4, 48}}, color = {0, 0, 127}));
   connect(r6c2.Tin, AHU_Cross_flow.T_extracted) annotation(
     Line(points = {{68, 0}, {80, 0}, {80, 44}, {12, 44}}, color = {0, 0, 127}));
+  connect(r6c2.Tin, heating_Cooling_SP.Sensor_in) annotation(
+    Line(points = {{68, 0}, {72, 0}, {72, -92}, {-68, -92}, {-68, -60}, {-52, -60}}, color = {0, 0, 127}));
+  connect(heating_Cooling_SP.Control_out, heat_pump.P_elec_in) annotation(
+    Line(points = {{-30, -66}, {0, -66}, {0, -40}}, color = {0, 0, 127}));
+  connect(Heating.y, heating_Cooling_SP.Heating) annotation(
+    Line(points = {{48, -66}, {52, -66}, {52, -76}, {-36, -76}}, color = {255, 0, 255}));
+  connect(Cooling.y, heating_Cooling_SP.Cooling) annotation(
+    Line(points = {{50, -44}, {60, -44}, {60, -88}, {-44, -88}, {-44, -78}}, color = {255, 0, 255}));
+  connect(Boundaries.y[4], heating_Cooling_SP.Temp_SP) annotation(
+    Line(points = {{-68, 0}, {-40, 0}, {-40, -54}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 2.66976e+07, StopTime = 2.7216e+07, Tolerance = 1e-06, Interval = 1036.8),
     __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian",
