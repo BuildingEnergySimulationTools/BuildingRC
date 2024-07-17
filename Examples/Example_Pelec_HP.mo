@@ -21,7 +21,7 @@ model Example_Pelec_HP
     Placement(visible = true, transformation(origin = {-40, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.BooleanExpression Heating(y = true) annotation(
     Placement(visible = true, transformation(origin = {36, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.BooleanExpression Cooling(y = false) annotation(
+  Modelica.Blocks.Sources.BooleanExpression Cooling(y = true) annotation(
     Placement(visible = true, transformation(origin = {38, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // Conversion
@@ -57,5 +57,5 @@ equation
   annotation(
     experiment(StartTime = 2.66976e+07, StopTime = 2.7216e+07, Tolerance = 1e-06, Interval = 1036.8),
     __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian",
-    __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"));
+    __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "euler"));
 end Example_Pelec_HP;
