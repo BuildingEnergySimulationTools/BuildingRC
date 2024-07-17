@@ -10,7 +10,7 @@ model Heat_pump
   Modelica.Blocks.Tables.CombiTable1Ds Cop_1D(extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint, table = [-5, 0.64; 0, 0.75; 5, 0.83; 10, 0.92; 15, 0.96; 20, 0.99; 25, 1; 50, 1])  annotation(
     Placement(visible = true, transformation(origin = {-36, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput Power_to_building annotation(
-    Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 28}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
+    Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
   Power_to_building = P_elec_in * COP_nominal * Cop_1D.y[1];
   connect(T_ext, Cop_1D.u) annotation(
