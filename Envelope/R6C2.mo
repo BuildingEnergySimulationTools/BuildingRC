@@ -16,10 +16,8 @@ model R6C2
   constant Modelica.Units.SI.SpecificHeatCapacity C_air = 1005 "[J/K.kg]";
   constant Modelica.Units.SI.Density Rho_air =  1.204 "kg/m3";
   constant Modelica.Units.SI.Time hour = 3600 "s";
-  parameter Modelica.Units.SI.MassFlowRate m_inf = Inf * V_int * Rho_air / hour;     //Infiltration flowrate
-  parameter Modelica.Units.SI.ThermalResistance R_inf = 1 / (C_air * m_inf);     //Infiltration ThermalInsulance
-  parameter Modelica.Units.SI.ThermalResistance R_win = 1 / (S_windows * U_win);
-  
+  parameter Modelica.Units.SI.MassFlowRate m_inf = Inf * V_int * Rho_air / hour;       //Infiltration flowrate
+ 
   
   Modelica.Thermal.HeatTransfer.Components.ThermalResistor Rw(R = 1 / (U_wall * S_walls)) annotation(
     Placement(visible = true, transformation(origin = {-18, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -39,7 +37,7 @@ model R6C2
     Placement(visible = true, transformation(origin = {-110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.ThermalResistor Ri(R = R_i / S_walls) annotation(
     Placement(visible = true, transformation(origin = {54, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.ThermalResistor Rwin_inf(R = R_inf * R_win / (R_inf + R_win)) annotation(
+  Modelica.Thermal.HeatTransfer.Components.ThermalResistor Rwin(R = 1 / (S_windows * U_win)) annotation(
     Placement(visible = true, transformation(origin = {0, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.ThermalResistor Re(R = R_e / S_walls) annotation(
     Placement(visible = true, transformation(origin = {-54, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -56,7 +54,8 @@ model R6C2
     Placement(visible = true, transformation(origin = {-188, -50}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput Tin(unit="C") annotation(
     Placement(visible = true, transformation(origin = {174, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  
+  Modelica.Thermal.HeatTransfer.Components.ThermalResistor Rinf(R = 1 / (C_air * m_inf)) annotation(
+    Placement(visible = true, transformation(origin = {0, 4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(Text_K.Kelvin, Text_convert.T) annotation(
     Line(points = {{-133, -50}, {-123, -50}}, color = {0, 0, 127}));
@@ -74,9 +73,9 @@ equation
     Line(points = {{110, -50}, {124, -50}}, color = {0, 0, 127}));
   connect(Text_convert.port, Re.port_a) annotation(
     Line(points = {{-100, -50}, {-64, -50}}, color = {191, 0, 0}));
-  connect(Text_convert.port, Rwin_inf.port_a) annotation(
+  connect(Text_convert.port, Rwin.port_a) annotation(
     Line(points = {{-100, -50}, {-80, -50}, {-80, -20}, {-10, -20}}, color = {191, 0, 0}));
-  connect(Rwin_inf.port_b, Cin.port) annotation(
+  connect(Rwin.port_b, Cin.port) annotation(
     Line(points = {{10, -20}, {76, -20}, {76, -70}}, color = {191, 0, 0}));
   connect(Text, Text_K.Celsius) annotation(
     Line(points = {{-188, -50}, {-156, -50}}, color = {0, 0, 127}));
@@ -92,6 +91,10 @@ equation
     Line(points = {{100, 10}, {100, 40}}, color = {0, 0, 127}));
   connect(Rs.port_b, Ri.port_a) annotation(
     Line(points = {{28, -50}, {44, -50}}, color = {191, 0, 0}));
+  connect(Tin_sens.port, Rinf.port_b) annotation(
+    Line(points = {{88, -50}, {76, -50}, {76, -14}, {34, -14}, {34, 4}, {10, 4}}, color = {191, 0, 0}));
+  connect(Rinf.port_a, Text_convert.port) annotation(
+    Line(points = {{-10, 4}, {-80, 4}, {-80, -50}, {-100, -50}}, color = {191, 0, 0}));
 protected
   annotation(
     uses(Modelica(version = "4.0.0")),
