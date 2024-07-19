@@ -9,7 +9,7 @@ model Example_Tin
   Modelica.Units.SI.Power heated_floor_ahu;
   constant Modelica.Units.SI.Density Rho_air = 1.204 "kg/m3";
   constant Modelica.Units.SI.Time hour = 3600 "s";
-  BuildingRC.Envelope.R6C2 r6c2(Building_cq = 500, C_fur = 1500, Inf = 10E-5, S_hc = 75, S_walls = 900, S_windows = 100, T_init (displayUnit = "K") = 287.75, U_wall = 0.9, U_win = 2, V_int = 750) annotation(
+  BuildingRC.Envelope.R6C2 r6c2( Inf = 10E-5, S_hc = 984, S_walls = 848, S_windows = 328, T_init (displayUnit = "degC") = 287.75, U_wall = 0.9, U_win = 2, V_int = 3608) annotation(
     Placement(visible = true, transformation(origin = {56, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable Boundaries(columns = 2:11, fileName = "C:/Users/bdurandestebe/Documents/56_NEOIA/modelica/boundaries_cta.txt", tableName = "table1", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -17,14 +17,14 @@ model Example_Tin
     Placement(visible = true, transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   BuildingRC.HVAC.AHU_Cross_flow AHU_Cross_flow(HX_eff = 0.7)  annotation(
     Placement(visible = true, transformation(origin = {0, 36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Airflow.ACH_Occupation aCH_Occupation(Building_volume = 750)  annotation(
+  Airflow.ACH_Occupation aCH_Occupation(Building_volume = 3608, Infiltration_occupation = 0.3)  annotation(
     Placement(visible = true, transformation(origin = {52, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // Conversion
   AHU_Cross_flow.Ctrl_m_blown_air = Boundaries.y[7] * Rho_air / hour;
   AHU_Cross_flow.Ctrl_m_extracted = Boundaries.y[7] * Rho_air / hour;
 // Solar gain
-  Solar_gain = r6c2.S_windows * fs * Boundaries.y[2] + r6c2.S_windows / 2 * fs * Boundaries.y[3];
+  Solar_gain = 263 * fs * Boundaries.y[2] + 65 * fs * Boundaries.y[3];
 // Remaining PAC heating power
   heated_floor_ahu = heat_pump.Power_to_building - AHU_Cross_flow.Heat_to_stream;
 // Structure gain
