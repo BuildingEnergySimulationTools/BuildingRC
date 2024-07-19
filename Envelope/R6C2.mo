@@ -10,8 +10,8 @@ model R6C2
   parameter Real Building_cq = 270 "Building daily heat capacity [kJ/m².K]";
   parameter Real C_fur = 20 "Building furniture coefficient of heat capacity [kJ/m².K]";
   parameter Modelica.Units.SI.Temperature T_init=293.15 "Building initial temperature";
-  parameter Modelica.Units.SI.ThermalInsulance R_i = 0.13 "Internal surface resistance coefficient";
-  parameter Modelica.Units.SI.ThermalInsulance R_e = 0.04 "External surface resistance coefficient";
+  parameter Modelica.Units.SI.ThermalInsulance R_i = 0.33 "Internal surface resistance coefficient";
+  parameter Modelica.Units.SI.ThermalInsulance R_e = 0.06 "External surface resistance coefficient";
   
   constant Modelica.Units.SI.SpecificHeatCapacity C_air = 1005 "[J/K.kg]";
   constant Modelica.Units.SI.Density Rho_air =  1.204 "kg/m3";
