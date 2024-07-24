@@ -2,12 +2,14 @@ within BuildingRC.HVAC;
 
 model Heat_pump
   parameter Real COP_nominal=3.0 "Heat Pump Coefficient Of Performance";
+  parameter Integer Np_doc=8 "Number of datasheet performance points in table"; 
+  parameter Real table[Np_doc, 2] = [-5, 0.64; 0, 0.75; 5, 0.83; 10, 0.92; 15, 0.96; 20, 0.99; 25, 1; 50, 1];
   
   Modelica.Blocks.Interfaces.RealInput T_ext(unit="C") annotation(
     Placement(visible = true, transformation(origin = {-120, 30}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput P_elec_in(unit="W") annotation(
     Placement(visible = true, transformation(origin = {0, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 90), iconTransformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Tables.CombiTable1Ds Cop_1D(extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint, table = [-5, 0.64; 0, 0.75; 5, 0.83; 10, 0.92; 15, 0.96; 20, 0.99; 25, 1; 50, 1])  annotation(
+  Modelica.Blocks.Tables.CombiTable1Ds Cop_1D(extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint, table = table)  annotation(
     Placement(visible = true, transformation(origin = {-36, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput Power_to_building annotation(
     Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
