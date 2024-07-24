@@ -31,20 +31,33 @@ parameter Modelica.Units.SI.SpecificHeatCapacity Hot_fluid_cap = 1005 "Default i
   SI.Power q_hx_max;
 
 equation
-  cold_side_cap = m_cold_in * Cold_fluid_cap;
-  hot_side_cap = m_hot_in * Hot_fluid_cap;
   
-  transfer_cap = min(cold_side_cap, hot_side_cap);
-  
-  q_hx_max = transfer_cap * (T_hot_in - T_cold_in) * Efficiency;
-  
-  T_cold_out = T_cold_in + (q_hx_max / cold_side_cap);
-  T_hot_out = T_hot_in - (q_hx_max / hot_side_cap);
+  if m_cold_in > 0 and m_hot_in > 0 then
+    cold_side_cap = m_cold_in * Cold_fluid_cap;
+    hot_side_cap = m_hot_in * Hot_fluid_cap;
+    
+    transfer_cap = min(cold_side_cap, hot_side_cap);
+    
+    q_hx_max = transfer_cap * (T_hot_in - T_cold_in) * Efficiency;
+    
+    T_cold_out = T_cold_in + (q_hx_max / max(cold_side_cap, 10E-4));
+    T_hot_out = T_hot_in - (q_hx_max / max(hot_side_cap, 10E-4));
+   else
+    cold_side_cap = 0;
+    hot_side_cap = 0;
+    transfer_cap = 0;
+    q_hx_max = 0;
+    T_cold_out = T_cold_in;
+    T_hot_out = T_hot_in;
+  end if;
   
   connect(m_cold_in, m_cold_out) annotation(
     Line(points = {{-120, -32}, {0, -32}, {0, -50}, {110, -50}}, color = {0, 0, 127}));
   connect(m_hot_in, m_hot_out) annotation(
     Line(points = {{120, 30}, {0, 30}, {0, 50}, {-110, 50}}, color = {0, 0, 127}));
 annotation(
-    Icon(graphics = {Rectangle(fillColor = {255, 0, 0}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 40}, {100, -40}}), Line(origin = {-1.33, -32.45}, points = {{-99, -27.8817}, {-79, -27.8817}, {-79, 26.1183}, {-53, 6.11831}, {-27, 28.1183}, {1, 4.11831}, {27, 26.1183}, {51, 2.11831}, {71, 26.1183}, {91, -5.88169}, {91, -27.8817}, {101, -27.8817}}, color = {0, 85, 255}, thickness = 2.5), Line(origin = {0.64, 31.76}, rotation = 180, points = {{-99, -27.8817}, {-79, -27.8817}, {-79, 26.1183}, {-53, 6.11831}, {-27, 28.1183}, {1, 4.11831}, {27, 26.1183}, {51, 2.11831}, {71, 26.1183}, {91, -5.88169}, {91, -27.8817}, {101, -27.8817}}, color = {255, 0, 255}, thickness = 2.5), Line(origin = {-6, -66}, points = {{-26, 0}, {26, 0}}, thickness = 1.5), Line(origin = {17.58, -66}, points = {{-5.58397, 8}, {6.41603, 0}, {-5.58397, -8}}, thickness = 1.5), Line(origin = {-25.0097, 69.3042}, rotation = 180, points = {{-5.58397, 8}, {6.41603, 0}, {-5.58397, -8}}, thickness = 1.5), Line(origin = {-0.75819, 69.3042}, rotation = 180, points = {{-26, 0}, {26, 0}}, thickness = 1.5)}));
+    Icon(graphics = {Rectangle(fillColor = {255, 0, 0}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 40}, {100, -40}}), Line(origin = {-1.33, -32.45}, points = {{-99, -27.8817}, {-79, -27.8817}, {-79, 26.1183}, {-53, 6.11831}, {-27, 28.1183}, {1, 4.11831}, {27, 26.1183}, {51, 2.11831}, {71, 26.1183}, {91, -5.88169}, {91, -27.8817}, {101, -27.8817}}, color = {0, 85, 255}, thickness = 2.5), Line(origin = {0.64, 31.76}, rotation = 180, points = {{-99, -27.8817}, {-79, -27.8817}, {-79, 26.1183}, {-53, 6.11831}, {-27, 28.1183}, {1, 4.11831}, {27, 26.1183}, {51, 2.11831}, {71, 26.1183}, {91, -5.88169}, {91, -27.8817}, {101, -27.8817}}, color = {255, 0, 255}, thickness = 2.5), Line(origin = {-6, -66}, points = {{-26, 0}, {26, 0}}, thickness = 1.5), Line(origin = {17.58, -66}, points = {{-5.58397, 8}, {6.41603, 0}, {-5.58397, -8}}, thickness = 1.5), Line(origin = {-25.0097, 69.3042}, rotation = 180, points = {{-5.58397, 8}, {6.41603, 0}, {-5.58397, -8}}, thickness = 1.5), Line(origin = {-0.75819, 69.3042}, rotation = 180, points = {{-26, 0}, {26, 0}}, thickness = 1.5)}),
+    experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-6, Interval = 0.002),
+    __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian",
+    __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"));
 end HX_constant_efficiency;
