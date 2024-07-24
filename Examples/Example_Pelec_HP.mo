@@ -5,11 +5,12 @@ model Example_Pelec_HP
   parameter Modelica.Units.SI.Efficiency fs = 0.4;
   parameter Real solar_wall_fraction = 0.5;
   parameter Real pac_wall_fraction = 0.5;
+  
   Modelica.Units.SI.Power Solar_gain;
   Modelica.Units.SI.Power heated_floor_ahu;
   constant Modelica.Units.SI.Density Rho_air = 1.204 "kg/m3";
   constant Modelica.Units.SI.Time hour = 3600 "s";
-  BuildingRC.Envelope.R6C2 r6c2(Inf = 10E-5, S_hc = 984, S_walls = 848, S_windows = 328, T_init (displayUnit = "degC") = 287.75, U_wall = 0.9, U_win = 2, V_int = 3608) annotation(
+  BuildingRC.Envelope.R6C2 r6c2(Inf = 10E-5, S_hc = 984, S_walls = 848, S_windows = 328, T_init (displayUnit = "degC") = 292.77, U_wall = 0.9, U_win = 2, V_int = 3608) annotation(
     Placement(visible = true, transformation(origin = {56, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable Boundaries(columns = 2:11, fileName = "C:/Users/bdurandestebe/Documents/56_NEOIA/modelica/boundaries_cta.txt", tableName = "table1", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
