@@ -2,38 +2,38 @@ within BuildingRC.Examples;
 
 model Example_Pelec_HP
   extends Modelica.Icons.Example;
-  parameter Modelica.Units.SI.Efficiency fs = 0.4;
-  parameter Real solar_wall_fraction = 0.5;
-  parameter Real pac_wall_fraction = 0.5;
+  parameter Modelica.Units.SI.Efficiency fs = 0.04;
+  parameter Real solar_wall_fraction = 0.7;
+  parameter Real pac_wall_fraction = 0.1;
   
   Modelica.Units.SI.Power Solar_gain;
   Modelica.Units.SI.Power heated_floor_ahu;
   constant Modelica.Units.SI.Density Rho_air = 1.204 "kg/m3";
   constant Modelica.Units.SI.Time hour = 3600 "s";
-  BuildingRC.Envelope.R6C2 r6c2(Inf = 0.13, S_hc = 984, S_walls = 848, S_windows = 328, T_init (displayUnit = "degC") = 292.77, U_wall = 0.9, U_win = 2, V_int = 3608) annotation(
+  BuildingRC.Envelope.R6C2 r6c2(Inf = 0.13, R_i = 0.03, S_hc = 984, S_walls = 848, S_windows = 328, T_init (displayUnit = "degC") = 292.77, U_wall = 0.4, U_win = 1.7, V_int = 3608) annotation(
     Placement(visible = true, transformation(origin = {56, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable Boundaries(columns = 2:14, fileName = "C:/Users/bdurandestebe/Documents/56_NEOIA/modelica/boundaries_cta.txt", tableName = "table1", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.HVAC.Heat_pump heat_pump annotation(
+  BuildingRC.HVAC.Heat_pump heat_pump(COP_nominal = 2.5)  annotation(
     Placement(visible = true, transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.Controls.Heating_Cooling_SP heating_Cooling_SP(Kp = 50000, Max_power = 10E8, controllerType = Modelica.Blocks.Types.SimpleController.P) annotation(
+  BuildingRC.Controls.Heating_Cooling_SP heating_Cooling_SP(Kp = 80000, Max_power = 10E8, controllerType = Modelica.Blocks.Types.SimpleController.P) annotation(
     Placement(visible = true, transformation(origin = {-40, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.BooleanExpression Heating(y = true) annotation(
     Placement(visible = true, transformation(origin = {36, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.BooleanExpression Cooling(y = true) annotation(
     Placement(visible = true, transformation(origin = {38, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.Airflow.ACH_Occupation aCH_Occupation(Building_volume = 3608, Infiltration_occupation = 0.3) annotation(
+  BuildingRC.Airflow.ACH_Occupation aCH_Occupation(Building_volume = 3608, Infiltration_empty = 0.03, Infiltration_occupation = 0.48) annotation(
     Placement(visible = true, transformation(origin = {56, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.HVAC.AHU_Cross_flow AHU_R1(HX_eff = 0.7) annotation(
+  BuildingRC.HVAC.AHU_Cross_flow AHU_R1(HX_eff = 0.5) annotation(
     Placement(visible = true, transformation(origin = {-14, 54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.HVAC.AHU_Cross_flow aHU_Multi(HX_eff = 0.7) annotation(
+  BuildingRC.HVAC.AHU_Cross_flow aHU_Multi(HX_eff = 0.5) annotation(
     Placement(visible = true, transformation(origin = {-22, 24}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // Conversion
   AHU_R1.Ctrl_m_blown_air = Boundaries.y[8] * Rho_air / hour;
   AHU_R1.Ctrl_m_extracted = Boundaries.y[8] * Rho_air / hour;
   aHU_Multi.Ctrl_m_blown_air = Boundaries.y[7] * Rho_air / hour;
-  aHU_Multi.Ctrl_m_extracted = Boundaries.y[7] * Rho_air / hour;  
+  aHU_Multi.Ctrl_m_extracted = Boundaries.y[7] * Rho_air / hour;
 // Solar gain
   Solar_gain = 263 * fs * Boundaries.y[2] + 65 * fs * Boundaries.y[3];
 // Remaining PAC heating power
@@ -57,7 +57,7 @@ equation
     Line(points = {{-68, 0}, {-40, 0}, {-40, -54}}, color = {0, 0, 127}));
   connect(Boundaries.y[1], aCH_Occupation.Text) annotation(
     Line(points = {{-68, 0}, {-60, 0}, {-60, 76}, {46, 76}}, color = {0, 0, 127}));
-  connect(Boundaries.y[10], aCH_Occupation.Occupancy) annotation(
+  connect(Boundaries.y[13], aCH_Occupation.Occupancy) annotation(
     Line(points = {{-68, 0}, {-60, 0}, {-60, 90}, {56, 90}, {56, 80}}, color = {0, 0, 127}));
   connect(r6c2.Tin, aCH_Occupation.Tin) annotation(
     Line(points = {{68, 0}, {90, 0}, {90, 50}, {26, 50}, {26, 68}, {46, 68}}, color = {0, 0, 127}));
@@ -74,7 +74,7 @@ equation
   connect(Boundaries.y[11], aHU_Multi.Tset_hot_blown) annotation(
     Line(points = {{-68, 0}, {-54, 0}, {-54, 40}, {-18, 40}, {-18, 36}}, color = {0, 0, 127}));
   annotation(
-    experiment(StartTime = 2.66976e+07, StopTime = 2.7216e+07, Tolerance = 1e-06, Interval = 1036.8),
+    experiment(StartTime = 2.66976e+07, StopTime = 2.7216e+07, Tolerance = 1e-06, Interval = 100),
     __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian",
     __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "euler"));
 end Example_Pelec_HP;
