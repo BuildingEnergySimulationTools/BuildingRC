@@ -14,7 +14,7 @@ model BeamComponent
   Modelica.Blocks.Interfaces.RealInput dni(unit="W/m2") "Direct Normal Irradiation" annotation(
     Placement(visible = true, transformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput Hdir(unit="W/m2") "" annotation(
-    Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {104, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   BuildingRC.Solar.AOIProjection aOIProjection(
     final surface_azimuth=surface_azimuth,
     final surface_tilt=surface_tilt)  annotation(
