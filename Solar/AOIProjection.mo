@@ -13,7 +13,7 @@ block AOIProjection "Angle of Incidence Projection Calculation"
   // Output port for the dot product (projection)
   Modelica.Blocks.Interfaces.RealOutput projection "Dot product of panel normal and solar angle" annotation(
     Placement(visible = true, transformation(extent = {{100, -10}, {120, 10}}, rotation = 0), iconTransformation(extent = {{100, -10}, {120, 10}}, rotation = 0)));
-//protected
+protected
   Real cos_surface_tilt, cos_solar_zenith, sin_surface_tilt, sin_solar_zenith, cos_azimuth_diff, dot_product, solar_zenith;
 equation
 
