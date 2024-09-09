@@ -3,11 +3,10 @@ within BuildingRC.Solar;
 model SkyDiffuse
 
   parameter Modelica.Units.SI.Angle surface_tilt "Surfce tilt angle, 0 is facing ground";
-  parameter Modelica.Units.SI.Area surface=1 "Surface Area";
   
   Modelica.Blocks.Interfaces.RealInput DHI(unit="W/m2")annotation(
     Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput DC (unit="W")annotation(
+  Modelica.Blocks.Interfaces.RealOutput DC (unit="W/m2")annotation(
     Placement(visible = true, transformation(origin = {120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   
 equation

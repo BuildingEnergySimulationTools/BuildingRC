@@ -4,7 +4,6 @@ model BeamComponent
 
   parameter Modelica.Units.SI.Angle surface_azimuth "Surface Angle East of North";
   parameter Modelica.Units.SI.Angle surface_tilt "Surface Tilt angle, 0 is facing ground";
-  parameter Modelica.Units.SI.Area surface=1 "Surface azimuth";  
 
 
   Modelica.Blocks.Interfaces.RealInput solar_azimuth(unit="deg") "Solar azimuth angle" annotation(
@@ -22,7 +21,7 @@ model BeamComponent
 
 equation
 
-  Hdir = max(0, surface * dni * aOIProjection.projection);
+  Hdir = max(0, dni * aOIProjection.projection);
   connect(solar_azimuth, aOIProjection.solar_azimuth) annotation(
     Line(points = {{-120, 60}, {-60, 60}, {-60, 30}, {-2, 30}}, color = {0, 0, 127}));
   connect(solar_elevation, aOIProjection.solar_elevation) annotation(

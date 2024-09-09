@@ -2,14 +2,13 @@ within BuildingRC.Solar;
 
 model GroundReflected
   parameter Modelica.Units.SI.Angle surface_tilt "Surfce tilt angle, 0 is facing ground";
-  parameter Modelica.Units.SI.Area surface=1 "Surface Area";
   parameter Modelica.Units.SI.Efficiency albedo=0.25 "Ground reflexion";
   
   Modelica.Blocks.Interfaces.RealInput DHI(unit="W/m2")annotation(
     Placement(visible = true, transformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -40}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput BHI(unit="W/m2")annotation(
     Placement(visible = true, transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 40}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));    
-  Modelica.Blocks.Interfaces.RealOutput GR (unit="W")annotation(
+  Modelica.Blocks.Interfaces.RealOutput GR (unit="W/m2")annotation(
     Placement(visible = true, transformation(origin = {120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   
 equation
