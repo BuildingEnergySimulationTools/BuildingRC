@@ -8,9 +8,9 @@ model BeamComponent
 
   Modelica.Blocks.Interfaces.RealInput solar_azimuth(unit="deg") "Solar azimuth angle" annotation(
     Placement(visible = true, transformation(origin = {-120, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput solar_elevation(unit="deg") "Solar zenith angle" annotation(
+  Modelica.Blocks.Interfaces.RealInput solar_elevation(unit="deg") "Solar elevation angle" annotation(
     Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput dni(unit="W/m2") "Direct Normal Irradiation" annotation(
+  Modelica.Blocks.Interfaces.RealInput bni(unit="W/m2") "Beam Normal Irradiation" annotation(
     Placement(visible = true, transformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput Hdir(unit="W/m2") "" annotation(
     Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
@@ -21,7 +21,7 @@ model BeamComponent
 
 equation
 
-  Hdir = max(0, dni * aOIProjection.projection);
+  Hdir = max(0, bni * aOIProjection.projection);
   connect(solar_azimuth, aOIProjection.solar_azimuth) annotation(
     Line(points = {{-120, 60}, {-60, 60}, {-60, 30}, {-2, 30}}, color = {0, 0, 127}));
   connect(solar_elevation, aOIProjection.solar_elevation) annotation(

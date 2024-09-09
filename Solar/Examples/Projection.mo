@@ -14,8 +14,10 @@ model Projection
     Placement(visible = true, transformation(origin = {0, -64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Add3 add3 annotation(
     Placement(visible = true, transformation(origin = {66, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  FullSurfaceProjection fullSurfaceProjection(albedo = 0.25, surface_azimuth(displayUnit = "deg") = 2.687807048071267, surface_tilt = 0.6108652381980153)  annotation(
+    Placement(visible = true, transformation(origin = {2, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
-  connect(Boundaries.y[5], beamComponent.dni) annotation(
+  connect(Boundaries.y[5], beamComponent.bni) annotation(
     Line(points = {{-68, 0}, {-46, 0}, {-46, -6}, {-12, -6}}, color = {0, 0, 127}));
   connect(Boundaries.y[2], beamComponent.solar_azimuth) annotation(
     Line(points = {{-68, 0}, {-46, 0}, {-46, 6}, {-12, 6}}, color = {0, 0, 127}));
@@ -33,6 +35,16 @@ equation
     Line(points = {{12, -30}, {28, -30}, {28, -34}, {54, -34}}, color = {0, 0, 127}));
   connect(groundReflected.GR, add3.u3) annotation(
     Line(points = {{12, -64}, {26, -64}, {26, -42}, {54, -42}}, color = {0, 0, 127}));
+  connect(Boundaries.y[1], fullSurfaceProjection.Sun_Elevation) annotation(
+    Line(points = {{-68, 0}, {-52, 0}, {-52, 52}, {-10, 52}}, color = {0, 0, 127}));
+  connect(Boundaries.y[2], fullSurfaceProjection.Sun_Azimuth) annotation(
+    Line(points = {{-68, 0}, {-48, 0}, {-48, 48}, {-10, 48}}, color = {0, 0, 127}));
+  connect(Boundaries.y[3], fullSurfaceProjection.BHI) annotation(
+    Line(points = {{-68, 0}, {-48, 0}, {-48, 44}, {-10, 44}}, color = {0, 0, 127}));
+  connect(Boundaries.y[4], fullSurfaceProjection.DHI) annotation(
+    Line(points = {{-68, 0}, {-52, 0}, {-52, 40}, {-10, 40}}, color = {0, 0, 127}));
+  connect(Boundaries.y[5], fullSurfaceProjection.BNI) annotation(
+    Line(points = {{-68, 0}, {-48, 0}, {-48, 38}, {-10, 38}}, color = {0, 0, 127}));
 
 annotation(
     experiment(StartTime = 16588800, StopTime = 16671600, Tolerance = 1e-6, Interval = 165.6),
