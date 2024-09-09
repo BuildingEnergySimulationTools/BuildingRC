@@ -14,7 +14,7 @@ model Projection
     Placement(visible = true, transformation(origin = {0, -64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Add3 add3 annotation(
     Placement(visible = true, transformation(origin = {66, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  FullSurfaceProjection fullSurfaceProjection(albedo = 0.25, surface_azimuth(displayUnit = "deg") = 2.687807048071267, surface_tilt = 0.6108652381980153)  annotation(
+  FullSurfaceProjection fullSurfaceProjection(albedo = 0.25, surface_azimuth(displayUnit = "deg") = 2.687807048071267, surface_tilt(displayUnit = "deg") = 0.6108652381980153)  annotation(
     Placement(visible = true, transformation(origin = {2, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(Boundaries.y[5], beamComponent.bni) annotation(
