@@ -4,9 +4,11 @@ model Projection
   extends Modelica.Icons.Example;
   Modelica.Blocks.Sources.CombiTimeTable Boundaries(columns = 2:7, fileName = "C:/Users/bdurandestebe/Documents/56_NEOIA/BuildingRC/Solar/Examples/sun.txt", tableName = "table1", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.Solar.BeamComponent beamComponent(surface = 1,surface_azimuth(displayUnit = "deg") = 2.687807048071267, surface_tilt = 0.6108652381980153)  annotation(
+  BuildingRC.Solar.BeamComponent beamComponent(
+  surface_azimuth(displayUnit = "deg") = 2.687807048071267,
+  surface_tilt(displayUnit = "deg") = 0.6108652381980153)  annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  BuildingRC.Solar.SkyDiffuse skyDiffuse(surface_tilt = 0.6108652381980153)  annotation(
+  BuildingRC.Solar.SkyDiffuse skyDiffuse(surface_tilt(displayUnit = "deg") = 0.6108652381980153)  annotation(
     Placement(visible = true, transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   BuildingRC.Solar.GroundReflected groundReflected(surface_tilt(displayUnit = "deg") = 0.6108652381980153)  annotation(
     Placement(visible = true, transformation(origin = {0, -64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
